@@ -12,104 +12,61 @@ namespace testpad
         static void Main(string[] args)
         {
             Console.SetWindowSize(134,23);
-            int mass = 2000000;
+            int mass = 2000;
             Console.WriteLine("Creating array with "+mass+" random numbers.");
             Random rand = new Random();
             int[] random = new int[mass];
             DateTime start = DateTime.Now;
-            for (int i = 0; i < mass; i++)
-            {
-                random[i] = rand.Next(mass*-1, mass);
-
-
-            }
+            for (int i = 0; i < mass; i++) random[i] = rand.Next(mass*-1, mass);
             long test0 = 0;
-            for (int i = 0; i < random.Length; i++)
-            {
-                test0 += random[i];
-            }
+            for (int i = 0; i < random.Length; i++) test0 += random[i];
             Console.WriteLine("array created in: "+(DateTime.Now-start).ToString("s\\.ffff"));
             Console.WriteLine("Copying the array.");
             int[] test = new int[mass];
             start = DateTime.Now;
-            for (int i = 0; i < mass; i++)
-            {
-                test[i] = random[i];
-            }
-           /* Console.WriteLine("Copy finished: "+(DateTime.Now-start).ToString("s\\.ffff"));
+            for (int i = 0; i < mass; i++) test[i] = random[i];
+            Console.WriteLine("Copy finished: "+(DateTime.Now-start).ToString("s\\.ffff"));
             long test1=0;
-            for (int i = 0; i < test.Length; i++)
-            {
-                test1 += test[i];
-            }
+            for (int i = 0; i < test.Length; i++) test1 += test[i];
             Console.WriteLine("Bubblesort using \"foreach\": "+bubble1(test, "foreach"));
-            for (int i = 0; i < mass; i++)
-            {
-                test[i] = random[i];
-            }
+            for (int i = 0; i < mass; i++)  test[i] = random[i];
             Console.WriteLine("Bubblesort using \"for\": "+bubble1(test,"for"));
-            for (int i = 0; i < mass; i++)
-            {
-                test[i] = random[i];
-            }
             long test2 = 0;
-            for (int i = 0; i < test.Length; i++)
-            {
-                test2 += test[i];
-            }
-            
+            for (int i = 0; i < test.Length; i++) test2 += test[i];
             Console.WriteLine("Bubblesort using \"while\": " + bubble1(test, "while"));
-            for (int i = 0; i < mass; i++)
-            {
-                test[i] = random[i];
-            }
-            Console.WriteLine("Renosort using \"for\": " + bubble1(test, "Reno"));*/
-            for (int i = 0; i < mass; i++)
-            {
-                test[i] = random[i];
-            }
+            for (int i = 0; i < mass; i++) test[i] = random[i];
+            Console.WriteLine("Renosort using \"for\": " + bubble1(test, "Reno"));
+            for (int i = 0; i < mass; i++) test[i] = random[i];
             long test3 = 0;
-            bool increments = true;
             List<int> errors1 = new List<int>();
             
             Console.WriteLine("Reno Multisort: " + bubble1(test, "Reno2"));
-            for (int i = 0; i < test.Length; i++)
-            {
-                test3 += test[i];
-            }
-            for (int i = 0; i < test.Length - 1; i++)
-            {
-                if (test[i] > test[i + 1])
-                {
-                    increments = false;
-                    errors1.Add(i);
-                }
-            }
+            for (int i = 0; i < test.Length; i++) test3 += test[i];
             Console.WriteLine("Original total of all numbers: " + test0);
-            /*Console.WriteLine("Total after bubblesort: " + test1);
+            Console.WriteLine("Total after bubblesort: " + test1);
             if (test0.Equals(test1)) Console.WriteLine("Bubblesort total matches with original");
             else Console.WriteLine("Bubblesort total does not match original total");
             Console.WriteLine("Total after Renosort: " + test2);
             if (test0.Equals(test2)) Console.WriteLine("Renosort total matches with original.");
-            else Console.WriteLine("Renosort total does not atch original");*/
+            else Console.WriteLine("Renosort total does not atch original");
             Console.WriteLine("Total after Renomultisort: " + test3);
             if (test0.Equals(test3)) Console.WriteLine("Renomultisort total matches original");
             else Console.WriteLine("Renomultisort total does not match original");
-            increments = true;
-            List<int> errors = new List<int>();
-            for (int i = 0; i < test.Length-1; i++)
-            {
-                if (test[i] > test[i + 1])
-                {
-                    increments = false;
-                    errors.Add(i);
-                }
-            }
-            if (increments) Console.WriteLine("Renomultisort result is sorted so numbers increment");
+            if (doesincrement(test)) Console.WriteLine("Renomultisort result is sorted so numbers increment");
             else Console.WriteLine("Renomultisort does not increment propperly");
             Console.WriteLine("done");
             Console.ReadLine();
         }
+
+
+        public static bool doesincrement (int[] test)
+        {
+            bool increments = true;
+            for (int i = 0; i < test.Length - 1; i++) if (test[i] > test[i + 1]) increments = false;
+            return increments;
+        }
+
+
         public static string bubble1(int[] intarray,string method)
         {
             switch (method)
