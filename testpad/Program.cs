@@ -96,9 +96,9 @@ namespace testpad
                 Console.WriteLine("Copying the intiger array to a list and using list sorting algorigtm as baseline.");
                 start = DateTime.Now;
                 for (int i = 0; i < mass; i++) testlist.Add(random[i]);
-                Console.WriteLine("Copy complete. Copy time was: " + (DateTime.Now - start).ToString("s\\.ffff"));
+                Console.WriteLine("Copy complete. Copy time was: " + (DateTime.Now - start).ToString("s\\.fffffff"));
                 testlist.Sort();
-                Console.WriteLine("List sort time including the copy time: " + (DateTime.Now - start).ToString("mm\\:ss\\.ffff"));
+                Console.WriteLine("List sort time including the copy time: " + (DateTime.Now - start).ToString("s\\.fffffff"));
 
                 //
                 //  Writing the data showing if the sorts were successfull.
