@@ -11,51 +11,126 @@ namespace testpad
     {
         static void Main(string[] args)
         {
-            Console.SetWindowSize(134,23);
-            int mass = 2000;
-            Console.WriteLine("Creating array with "+mass+" random numbers.");
-            Random rand = new Random();
-            int[] random = new int[mass];
-            DateTime start = DateTime.Now;
-            for (int i = 0; i < mass; i++) random[i] = rand.Next(mass*-1, mass);
-            long test0 = 0;
-            for (int i = 0; i < random.Length; i++) test0 += random[i];
-            Console.WriteLine("array created in: "+(DateTime.Now-start).ToString("s\\.ffff"));
-            Console.WriteLine("Copying the array.");
-            int[] test = new int[mass];
-            start = DateTime.Now;
-            for (int i = 0; i < mass; i++) test[i] = random[i];
-            Console.WriteLine("Copy finished: "+(DateTime.Now-start).ToString("s\\.ffff"));
-            long test1=0;
-            for (int i = 0; i < test.Length; i++) test1 += test[i];
-            Console.WriteLine("Bubblesort using \"foreach\": "+bubble1(test, "foreach"));
-            for (int i = 0; i < mass; i++)  test[i] = random[i];
-            Console.WriteLine("Bubblesort using \"for\": "+bubble1(test,"for"));
-            long test2 = 0;
-            for (int i = 0; i < test.Length; i++) test2 += test[i];
-            Console.WriteLine("Bubblesort using \"while\": " + bubble1(test, "while"));
-            for (int i = 0; i < mass; i++) test[i] = random[i];
-            Console.WriteLine("Renosort using \"for\": " + bubble1(test, "Reno"));
-            for (int i = 0; i < mass; i++) test[i] = random[i];
-            long test3 = 0;
-            List<int> errors1 = new List<int>();
-            
-            Console.WriteLine("Reno Multisort: " + bubble1(test, "Reno2"));
-            for (int i = 0; i < test.Length; i++) test3 += test[i];
-            Console.WriteLine("Original total of all numbers: " + test0);
-            Console.WriteLine("Total after bubblesort: " + test1);
-            if (test0.Equals(test1)) Console.WriteLine("Bubblesort total matches with original");
-            else Console.WriteLine("Bubblesort total does not match original total");
-            Console.WriteLine("Total after Renosort: " + test2);
-            if (test0.Equals(test2)) Console.WriteLine("Renosort total matches with original.");
-            else Console.WriteLine("Renosort total does not atch original");
-            Console.WriteLine("Total after Renomultisort: " + test3);
-            if (test0.Equals(test3)) Console.WriteLine("Renomultisort total matches original");
-            else Console.WriteLine("Renomultisort total does not match original");
-            if (doesincrement(test)) Console.WriteLine("Renomultisort result is sorted so numbers increment");
-            else Console.WriteLine("Renomultisort does not increment propperly");
-            Console.WriteLine("done");
-            Console.ReadLine();
+            int consolewidth = 130;
+            Console.SetWindowSize(consolewidth,42);
+            while (true)
+            {
+                Console.WriteLine("This is a test for a intiger sorting algorithm.");
+                Console.Write("Enter the size of the array to be generated for the test." + Environment.NewLine +
+                            "Only use natural numbers. Usefull values are between 5000 and 100000: ");
+                string input = Console.ReadLine();
+                int mass;
+                if (!int.TryParse(input, out mass))
+                {
+                    for (int i = 0; i < 100; i++) Console.Write("Only use natural numbers! Usefull values are between 5000 and 100000!");
+                    Console.Clear();
+                    continue;
+                }
+
+                //
+                //  Creating random number generator and the array of random numbers.
+                //
+
+                Console.WriteLine("Creating array with " + mass + " random numbers.");
+                Random rand = new Random();
+                int[] random = new int[mass];
+                DateTime start = DateTime.Now;
+                for (int i = 0; i < mass; i++) random[i] = rand.Next(mass * -1, mass);
+                long test0 = 0;
+                for (int i = 0; i < random.Length; i++) test0 += random[i];
+                Console.WriteLine("array created in: " + (DateTime.Now - start).ToString("s\\.ffff"));
+
+                //
+                //  To make sure all algorithms get the same arry it is going to be copied before each run.
+                //  Then the algorithm will sort the copy.
+                //
+
+                Console.WriteLine("Copying the array.");
+                int[] test = new int[mass];
+                start = DateTime.Now;
+                for (int i = 0; i < mass; i++) test[i] = random[i];
+                Console.WriteLine("Copy finished: " + (DateTime.Now - start).ToString("s\\.ffff"));
+
+                Console.WriteLine();
+                Console.WriteLine(bordergenerator("BubbleSort", consolewidth));
+
+                long test1 = 0;
+                for (int i = 0; i < test.Length; i++) test1 += test[i];
+                Console.WriteLine("Bubblesort using \"foreach\": " + bubble1(test, "foreach"));
+                for (int i = 0; i < mass; i++) test[i] = random[i];
+
+                //
+                //  Starting the Bubblesort for run.
+                //
+
+                Console.WriteLine("Bubblesort using \"for\": " + bubble1(test, "for"));
+                long test2 = 0;
+                for (int i = 0; i < test.Length; i++) test2 += test[i];
+                for (int i = 0; i < mass; i++) test[i] = random[i];
+
+                //
+                //  Starting the Bubblesort while run.
+                //
+
+                Console.WriteLine("Bubblesort using \"while\": " + bubble1(test, "while"));
+                for (int i = 0; i < mass; i++) test[i] = random[i];
+
+                Console.WriteLine();
+                Console.WriteLine(bordergenerator("RenoSort", consolewidth));
+
+                Console.WriteLine("Renosort using \"for\": " + bubble1(test, "Reno"));
+                for (int i = 0; i < mass; i++) test[i] = random[i];
+                long test3 = 0;
+
+                //
+                //  Starting the RenoSort2 run.
+                //
+
+                Console.WriteLine("Reno Multisort: " + bubble1(test, "Reno2"));
+                for (int i = 0; i < test.Length; i++) test3 += test[i];
+
+                Console.WriteLine();
+                Console.WriteLine(bordergenerator("ListSort", consolewidth));
+
+                List<int> testlist = new List<int>();
+                Console.WriteLine("Copying the intiger array to a list and using list sorting algorigtm as baseline.");
+                start = DateTime.Now;
+                for (int i = 0; i < mass; i++) testlist.Add(random[i]);
+                Console.WriteLine("Copy complete. Copy time was: " + (DateTime.Now - start).ToString("s\\.ffff"));
+                testlist.Sort();
+                Console.WriteLine("List sort time including the copy time: " + (DateTime.Now - start).ToString("mm\\:ss\\.ffff"));
+
+                //
+                //  Writing the data showing if the sorts were successfull.
+                //
+                Console.WriteLine();
+                Console.WriteLine(bordergenerator("Verification Data",consolewidth));
+                Console.WriteLine("Original total of all numbers: " + test0);
+                Console.WriteLine("Total after bubblesort: " + test1);
+                if (test0.Equals(test1)) Console.WriteLine("Bubblesort total matches with original");
+                else Console.WriteLine("Bubblesort total does not match original total");
+                Console.WriteLine("Total after Renosort: " + test2);
+                if (test0.Equals(test2)) Console.WriteLine("Renosort total matches with original.");
+                else Console.WriteLine("Renosort total does not atch original");
+                Console.WriteLine("Total after Renomultisort: " + test3);
+                if (test0.Equals(test3)) Console.WriteLine("Renomultisort total matches original");
+                else Console.WriteLine("Renomultisort total does not match original");
+                if (doesincrement(test)) Console.WriteLine("Renomultisort result is sorted so numbers increment");
+                else Console.WriteLine("Renomultisort does not increment propperly");
+
+                //
+                // Finish message
+                //
+
+                Console.WriteLine("Test complete");
+                Console.WriteLine("Press y to start the test again. Anything else to exit.");
+                if (Console.ReadKey().Key == ConsoleKey.Y)
+                {
+                    Console.Clear();
+                    continue;
+                }
+                break;
+            }
         }
 
 
@@ -65,8 +140,6 @@ namespace testpad
             for (int i = 0; i < test.Length - 1; i++) if (test[i] > test[i + 1]) increments = false;
             return increments;
         }
-
-
         public static string bubble1(int[] intarray,string method)
         {
             switch (method)
@@ -140,7 +213,6 @@ namespace testpad
                     start = DateTime.Now;
                     arraylength = intarray.LongLength;
                     int last = 0;
-                    int current;
                     Console.Write("Sorting: ");
                         for (int i = 0; i < arraylength-1; i++)
                         {
@@ -255,6 +327,14 @@ namespace testpad
             else if (percentage % 5 == 0 && percentage != 100) Console.Write(percentage);
             else  Console.Write("=");
             return percentage;
+        }
+        public static string bordergenerator (string middle, int width)
+        {
+            int section = (width - middle.Length) / 2;
+            string border = "";
+            for (int i = 0; i < section; i++) border += "*";
+            if ((section*2)+middle.Length==width) return border + middle + border;
+            else return border + middle + border + "*";
         }
     }
 }
